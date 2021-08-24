@@ -1,51 +1,77 @@
 class Traveler {
-    constructor(name, food, isHealthy) {
+    food = 1;
+    isHealthy = true;
+    constructor(name) {
         this.name = name;
-        this.food = food;
-        this.isHealthy = isHealthy;
+    }
+    get name() {
+        return this._name;
+    }
+    set name(name) {
+        this._name = name
     }
     hunt() {
-        this.food += 1;
+        return this.food += 2;
     }
     eat() {
-        if (this.food > 0) {
-            this.food -= 1;
-        } else {
+        if (this.food <= 0) {
             this.isHealthy = false;
+        } else {
+            this.food -= 1;
         }
+
     }
 }
 class Wagon {
-    constructor(capacity, passageiros) {
+    passageiros = [];
+    empetyPlace = 0;
+    constructor(capacity) {
         this.capacity = capacity;
-        this.passageiros = passageiros;
     }
+    get capacity() {
+        return this._name;
+    }
+    set capacity(capacity) {
+        this._capacity = capacity
+    }
+
     getAvailableSeatCount() {
-        return this.capacity;
+        this.empetyPlace = this.capacity - this.passageiros.length;
+        if (this.empetyPlace < 0) {
+            this.empetyPlace = 0;
+        }
+        return this.empetyPlace;
+
+
+
     }
     join(traver) {
-        this.passageiros = []
-        this.passageiros.push(traver)
-        this.capacity -= 1;
-        if (this.capacity < 1) {
-            this.capacity = 0;
+        if (this.empetyPlace > 0) {
+            this.passageiros.push(traver)
         }
+
     }
+
     shouldQuarantine() {
-        if (Traveler.food === 0) {
-            return true
-        } else {
-            return false
+        for (let i = 0; i < this.passageiros.length; i++) {
+            if (this.passageiros[i].isHealthy === false) {
+                return true
+            }
         }
+        return false;
     }
     totalFood() {
-        let totalFood = 0
-        for (let i = 0; i < this.capacity; i++) {
-            totalFood += this.passageiros.food
+        let foodAcuracy = 0;
+        for (let i = 0; i < this.passageiros.length; i++) {
+            foodAcuracy += this.passageiros[i].food
         }
-        return totalFood;
+        return foodAcuracy;
+
     }
+
 }
+
+
 // Criar uma carroça que comporta 2 pessoas
 let wagon = new Wagon(2);
 // Criar três viajantes
